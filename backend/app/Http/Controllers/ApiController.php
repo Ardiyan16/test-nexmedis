@@ -446,8 +446,7 @@ class ApiController extends Controller
         $query = Comment::where('id', $id);
         $data = $query->first();
         $queryPost = Post::where('id', $data->post_id);
-        $dataPost = $query->first();
-
+        $dataPost = $queryPost->first();
         $delete = $query->delete();
         if($delete) {
             $total_comment = $dataPost->total_comment;

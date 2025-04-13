@@ -21,7 +21,7 @@ export const ConfirmDelete = (message, status) => {
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#898989',
-        confirmButtonText: 'Ya, Hapus!'
+        confirmButtonText: 'Yes, Delete!'
     })
 }
 

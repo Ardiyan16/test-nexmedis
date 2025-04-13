@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom"
 import { CardPostDetail } from "../components/card/post-detail"
 import api from "../api"
 import Spinner from "../components/global/spinner"
-import { Notification } from "../components/global/notif"
+import { ConfirmDelete, Notification } from "../components/global/notif"
 import { ToastContainer } from "react-toastify"
 
 const PostingPage = () => {
@@ -83,6 +83,18 @@ const PostingPage = () => {
 
     }
 
+    const handleDelete = (post_id) => {
+        ConfirmDelete('Comments data will be deleted', 'question').then((result) => {
+            if (result.isConfirmed) {
+                api.get('/v1/comments/delete/' + post_id).then((response) => {
+                    fetchData()
+                }).catch((error) => {
+                    Notification(error.response.data.message, 'error', 2500)
+                })
+            }
+        })
+    }
+
     return (
         <Fragment>
             <Navbar />
@@ -100,13 +112,13 @@ const PostingPage = () => {
 
                                 <div className="space-y-4">
                                     {comment.length > 0 && comment.map((val, i) => (
-                                        <div className="flex gap-3">
+                                        <div key={i} className="flex gap-3">
                                             <img src={val.images ? imgUrl + '/profile/' + val.images : '/image/user.png'} className="w-10 h-10 rounded-full" alt="Avatar" />
                                             <div className="bg-gray-100 p-3 rounded-xl w-full">
                                                 <div className="flex justify-between">
                                                     <h4 className="font-semibold text-sm text-gray-800">{val.username} </h4>
                                                     {idUser == val.user_id &&
-                                                        <button type="button" title="Delete Comment">
+                                                        <button onClick={() => handleDelete(val.id)} type="button" title="Delete Comment">
                                                             <i className="fas fa-trash-can"></i>
                                                         </button>
                                                     }
